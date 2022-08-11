@@ -1,6 +1,6 @@
 import "./lib/db";
 import express from "express";
-import countryRoutes from "./routes/country";
+import countryRoute from "./routes/country";
 import stationRoute from "./routes/station";
 
 const app = express();
@@ -14,9 +14,9 @@ app.get("/", async (req, res) => {
   res.json({ message: "Please visit /countries to view all the countries" });
 });
 
-app.use("/countries", countryRoutes);
+app.use("/countries", countryRoute);
 
-app.use("/stations", countryRoutes);
+app.use("/stations", stationRoute);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
