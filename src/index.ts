@@ -4,6 +4,8 @@ import countryRoute from "./routes/country";
 import stationRoute from "./routes/station";
 import testRoute from "./routes/test";
 
+require('dotenv').config();
+
 const app = express();
 const port = process.env.PORT || 3333;
 
