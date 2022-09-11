@@ -29,15 +29,15 @@ app.get("/station/:id", async(req, res) => {
             longitude: Math.random() * (-75.5169459 + 75.4660635) - 75.4660635,
           }
         },
-        rain_sensor: Math.random() * (100 - 24) + 24,
-        temperature: Math.random() * (100 - 24) + 24,
+        temperature: Math.random() * (60 - 0) + 0,
+        humidity: Math.random() * (100 - 0) + 0,
+        precipitation: Math.random() * (10000 - 0) + 0,
+        lumens: Math.random() * (300000 - 0) + 0,
+        rain: Math.random() * (1000 - 0) + 0,
         direction: Math.random() * (360 - 0) + 0,
-        uv_sensor: Math.random() * (100 - 0) + 0,
-        wind_speed: Math.random() * (100 - 60) + 60,
-        precipitation: Math.random() * (500 - 100) + 100,
-        lumens: Math.random() * (1000 - 230) + 230,
-        humidity: Math.random() * (200 - 70) + 70,
-        rive_height: Math.random() * (30 - 0) + 0,
+        uv: Math.random() * (15 - 0) + 0,
+        wind_speed: Math.random() * (160 - 0) + 0,
+        rive_height: Math.random() * (20 - 0) + 0,
         earth_movement: Math.random() * (100 + 100) - 100
       }
     )
