@@ -124,19 +124,19 @@ routes.get("/sensor-history", async (req, res) => {
 });
 
 function getFakeValue(valueIn: number, max: number) {
-  var object = {
+  var object = [{
     value: valueIn,
     color: "",
-  };
+  }];
 
-  if (object.value < max * 0.5) {
-    object.color = "34a853";
-  } else if (object.value < max*0.7 && object.value > max*0.51) {
-    object.color = "fbbc05";
-  } else if (object.value < max*0.90 && object.value > max*0.71) {
-    object.color = "fa5901";
-  } else if (object.value > max*0.91) {
-    object.color = "FF0000";
+  if (object[0].value < max * 0.5) {
+    object[0].color = "34a853";
+  } else if (object[0].value < max*0.7 && object[0].value > max*0.51) {
+    object[0].color = "fbbc05";
+  } else if (object[0].value < max*0.90 && object[0].value > max*0.71) {
+    object[0].color = "fa5901";
+  } else if (object[0].value > max*0.91) {
+    object[0].color = "FF0000";
   }
 
   return object;
