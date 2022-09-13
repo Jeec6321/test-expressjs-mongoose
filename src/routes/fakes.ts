@@ -59,24 +59,41 @@ routes.get("/stations", async (req, res) => {
 routes.get("/station/:id", async (req, res) => {
   var min = 0;
   var max = 1;
-  const id = req.params["id"];
+  const id: string = req.params["id"];
+
+  var location = {
+    latitude: 10.382886,
+    longitude: -75.523348
+  }
 
   switch (id) {
     case "AA1d":
       min = 0;
       max = 0.1;
+
+      location.latitude = 10.4370837;
+      location.longitude = -75.5090177;
       break;
     case "YY3D2":
       min = 0.51;
       max = 0.7;
+
+      location.latitude = 10.419338;
+      location.longitude = -75.471564;
       break;
     case "UY3F2":
       min = 0.71;
       max = 0.9;
+
+      location.latitude = 10.308277;
+      location.longitude = -75.502495;
       break;
    case "ZX3VF":
       min = 0.91;
       max = 1;
+
+      location.latitude = 10.356986;
+      location.longitude = -75.511188;
       break;
   }
 
@@ -85,10 +102,7 @@ routes.get("/station/:id", async (req, res) => {
       station: {
         id: id,
         name: "Estación " + id,
-        location: {
-          latitude: 10.4370837,
-          longitude: -75.5090177,
-        },
+        location: location
       },
       temperature: getFakeValue(Math.random() * (60 * max - 60 * min) + 60 * min, 60),
       humidity: getFakeValue(Math.random() * (100 * max - 100 * min) + 100 * min, 100),
