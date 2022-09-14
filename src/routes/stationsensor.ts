@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { StationSensorModel, IStationSensor } from "../models/stationSensor";
+import { StationSensorModel, IStationSensor } from "../models/stationsensor";
 
 const routes = Router();
 

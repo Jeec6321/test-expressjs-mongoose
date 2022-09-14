@@ -3,7 +3,7 @@ import express from "express";
 import countryRoute from "./routes/country";
 import sensorRoute from "./routes/sensor";
 import stationRoute from "./routes/station";
-import stationSensorRoute from "./routes/stationSensor"
+import stationSensorRoute from "./routes/stationsensor"
 import fakesRoute from "./routes/fakes";
 
 require('dotenv').config();
