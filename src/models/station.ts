@@ -1,25 +1,22 @@
 import { model, Schema, Document } from "mongoose";
+import mongoose from "mongoose"
 
 interface IStation extends Document {
     name: string;
-    iso2code: string;
 }
 
 const StationSchema = new Schema({
     name: {
         type: String
     },
-    description: {
-        type: String
+    location: {
+        type: Object
     },
-    latitude: {
-        type: Number
-    },
-    longitude: {
-        type: Number
-    }
+    sensors: [{
+       type: mongoose.Types.ObjectId, ref: "sensor"
+    }]
 });
 
-const StationModel = model<IStation>("Station", StationSchema);
+const StationModel = model<IStation>("station", StationSchema);
 
-export { StationModel, IStation };
+export { StationModel, IStation, StationSchema };

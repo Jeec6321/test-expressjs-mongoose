@@ -6,7 +6,7 @@ routes.get("/fake", async (req, res) => {
   return res.status(200).json({ message: "All is good!!" });
 });
 
-routes.get("/stations", async (req, res) => {
+routes.get("/station/all", async (req, res) => {
   try {
     return res.status(200).json([
       {

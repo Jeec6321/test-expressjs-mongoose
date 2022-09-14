@@ -1,7 +1,9 @@
 import "./lib/db";
 import express from "express";
 import countryRoute from "./routes/country";
+import sensorRoute from "./routes/sensor";
 import stationRoute from "./routes/station";
+import stationSensorRoute from "./routes/stationSensor"
 import fakesRoute from "./routes/fakes";
 
 require('dotenv').config();
@@ -19,9 +21,13 @@ app.get("/", async (req, res) => {
 
 //app.use("/countries", countryRoute);
 
-//app.use("/stations", stationRoute);
+app.use("/sensor", sensorRoute);
 
-app.use("/", fakesRoute);
+app.use("/station", stationRoute);
+
+app.use("/station-sensor", stationSensorRoute)
+
+app.use("/fake", fakesRoute);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
