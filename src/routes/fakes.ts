@@ -2,11 +2,7 @@ import { Router } from "express";
 
 const routes = Router();
 
-routes.get("/fake", async (req, res) => {
-  return res.status(200).json({ message: "All is good!!" });
-});
-
-routes.get("/station/all", async (req, res) => {
+routes.get("/stations", async (req, res) => {
   try {
     return res.status(200).json([
       {
