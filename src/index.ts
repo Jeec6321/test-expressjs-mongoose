@@ -5,6 +5,7 @@ import sensorRoute from "./routes/sensor";
 import stationRoute from "./routes/station";
 import stationSensorRoute from "./routes/stationsensor"
 import fakesRoute from "./routes/fakes";
+import suscribeRoute from "./routes/suscribe"
 
 require('dotenv').config();
 
@@ -23,6 +24,8 @@ app.use("/sensor", sensorRoute);
 app.use("/station", stationRoute);
 
 app.use("/station-sensor", stationSensorRoute)
+
+app.use("/suscribe", suscribeRoute)
 
 app.use("/fake", fakesRoute);
 
