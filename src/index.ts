@@ -6,10 +6,13 @@ import stationRoute from "./routes/station";
 import stationSensorRoute from "./routes/stationsensor"
 import fakesRoute from "./routes/fakes";
 import suscribeRoute from "./routes/suscribe"
+import cors from 'cors';
 
 require('dotenv').config();
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 

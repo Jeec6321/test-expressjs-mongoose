@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { ISuscribe, SuscribeModel, SuscribeSchema } from "../models/suscribe";
+import { SuscribeModel } from "../models/suscribe";
 import { body, validationResult } from "express-validator";
-import { MongoError } from "mongodb";
+import ResponseTemplate from "../utils/responseTemplate"
 
 const routes = Router();
 
@@ -11,10 +11,10 @@ routes.post(
     body("hash_whatsapp").exists(),
     async (req, res) => {
         try {
-            const errors = validationResult(req);
+            const errors: any = validationResult(req);
 
             if (!errors.isEmpty()) {
-              return res.status(400).json({ errors: errors.array() });
+              return ResponseTemplate(402, res, errors.array(), false)
             }
             
             const findSuscribe = await SuscribeModel.findOne({
@@ -27,13 +27,13 @@ routes.post(
 
                 findSuscribe.save()
 
-                return res.status(200).json({response: "Success update"})
+                return ResponseTemplate(200, res, {resposne: "success"}, true)
             }
 
-            return res.status(404).json({error: "invalid whatsapp or hash"})
+            return ResponseTemplate(404, res, {error: "invalid whatsapp or hash"}, false)
 
         } catch (error) {
-            return res.status(500).json({error: "Sorry, something went wrong :/" })
+            return ResponseTemplate(500, res, {}, false)
         }
     }
 )
@@ -44,10 +44,10 @@ routes.post(
     body("hash_email").exists(),
     async (req, res) => {
         try {
-            const errors = validationResult(req);
+            const errors: any = validationResult(req);
 
             if (!errors.isEmpty()) {
-              return res.status(400).json({ errors: errors.array() });
+              return ResponseTemplate(402, res, errors.array(), false)
             }
             
             const findSuscribe = await SuscribeModel.findOne({
@@ -60,13 +60,13 @@ routes.post(
 
                 findSuscribe.save()
 
-                return res.status(200).json({response: "Success update"})
+                return ResponseTemplate(200, res, {resposne: "Success update"}, true)
             }
 
-            return res.status(404).json({error: "invalid email or hash"})
+            return ResponseTemplate(404, res, {error: "invalid whatsapp or hash"}, false)
 
         } catch (error) {
-            return res.status(500).json({error: "Sorry, something went wrong :/" })
+            return ResponseTemplate(500, res, {}, false)
         }
     }
 )
@@ -79,22 +79,22 @@ routes.post(
   body("accept_terms").isBoolean(),
   async (req, res) => {
     try {
-      const errors = validationResult(req);
+      const errors: any = validationResult(req);
 
       if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return ResponseTemplate(200, res, errors.array(), false)
       }
 
       const findWhatsapp = await SuscribeModel.findOne({whatsapp: req.body.whatsapp})
 
       if (findWhatsapp) {
-          return res.status(400).json({error: "whatsapp already exists"})
+          return ResponseTemplate(400, res, {error_type: 505, message: "Whatsapp already exists"}, false)
       }
 
       const findEmail = await SuscribeModel.findOne({email: req.body.email})
 
       if (findEmail) {
-          return res.status(401).json({error: "email already exists"})
+          return ResponseTemplate(400, res, {error_type: 606, message: "Email already exists"}, false) //
       }
 
       const suscribe = new SuscribeModel({
@@ -110,11 +110,10 @@ routes.post(
 
       await suscribe.save();
 
-      return res
-        .status(200)
-        .json({ response: "Suscribe created successfully" });
+      return ResponseTemplate(200, res, {response: "Suscribe created successfully"}, true)
+
     } catch (error) {
-      return res.status(500).json({ error: "Sorry, something went wrong :/" });
+      return ResponseTemplate(500, res, {}, true)
     }
   }
 );
