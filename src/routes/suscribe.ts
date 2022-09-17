@@ -1,24 +1,24 @@
 import { Router } from "express";
 import { SuscribeModel } from "../models/suscribe";
 import { body, validationResult } from "express-validator";
-import ResponseTemplate from "../utils/responseTemplate"
+import { Codes, ErrorTemplate, ResponseTemplate } from "../utils/responseTemplate"
 
 const routes = Router();
 
 routes.post(
     "/verify-whatsapp",
-    body("whatsapp").exists().isLength({max: 10, min: 10}),
+    body("id").exists().isMongoId(),
     body("hash_whatsapp").exists(),
     async (req, res) => {
         try {
             const errors: any = validationResult(req);
 
             if (!errors.isEmpty()) {
-              return ResponseTemplate(402, res, errors.array(), false)
+              return ResponseTemplate(200, res, ErrorTemplate(Codes.VALIDATOR_ERROR, errors.array()), false)
             }
             
             const findSuscribe = await SuscribeModel.findOne({
-                whatsapp: req.body.whatsapp,
+                _id: req.body.id,
                 hash_whatsapp: req.body.hash_whatsapp
             })
 
@@ -27,12 +27,13 @@ routes.post(
 
                 findSuscribe.save()
 
-                return ResponseTemplate(200, res, {resposne: "success"}, true)
+                return ResponseTemplate(200, res, {resposne: "Success update"}, true)
             }
 
-            return ResponseTemplate(404, res, {error: "invalid whatsapp or hash"}, false)
+            return ResponseTemplate(404, res, ErrorTemplate(Codes.SUSCRIBE_NOT_FOUND, "id or hash invalid"), false)
 
         } catch (error) {
+            console.log(error)
             return ResponseTemplate(500, res, {}, false)
         }
     }
@@ -40,18 +41,18 @@ routes.post(
 
 routes.post(
     "/verify-email",
-    body("email").exists(),
+    body("id").exists().isMongoId(),
     body("hash_email").exists(),
     async (req, res) => {
         try {
             const errors: any = validationResult(req);
 
             if (!errors.isEmpty()) {
-              return ResponseTemplate(402, res, errors.array(), false)
+              return ResponseTemplate(200, res, ErrorTemplate(Codes.VALIDATOR_ERROR, errors.array()), false)
             }
             
             const findSuscribe = await SuscribeModel.findOne({
-                email: req.body.email,
+                _id: req.body.id,
                 hash_email: req.body.hash_email
             })
 
@@ -63,9 +64,10 @@ routes.post(
                 return ResponseTemplate(200, res, {resposne: "Success update"}, true)
             }
 
-            return ResponseTemplate(404, res, {error: "invalid whatsapp or hash"}, false)
+            return ResponseTemplate(200, res, ErrorTemplate(Codes.SUSCRIBE_NOT_FOUND, "id or hash invalid"), false)
 
         } catch (error) {
+          console.log(error)
             return ResponseTemplate(500, res, {}, false)
         }
     }
@@ -76,32 +78,31 @@ routes.post(
   body("name").exists(),
   body("email").isEmail(),
   body("whatsapp").isNumeric().isLength({ max: 10, min: 10 }),
-  body("accept_terms").isBoolean(),
   async (req, res) => {
     try {
       const errors: any = validationResult(req);
 
       if (!errors.isEmpty()) {
-        return ResponseTemplate(200, res, errors.array(), false)
+        return ResponseTemplate(200, res, ErrorTemplate(Codes.VALIDATOR_ERROR, errors.array()), false)
       }
 
       const findWhatsapp = await SuscribeModel.findOne({whatsapp: req.body.whatsapp})
 
       if (findWhatsapp) {
-          return ResponseTemplate(400, res, {error_type: 505, message: "Whatsapp already exists"}, false)
+          return ResponseTemplate(200, res, ErrorTemplate(Codes.WHATSAPP_EXISTS, "Whatsapp already exists"), false)
       }
 
       const findEmail = await SuscribeModel.findOne({email: req.body.email})
 
       if (findEmail) {
-          return ResponseTemplate(400, res, {error_type: 606, message: "Email already exists"}, false) //
+          return ResponseTemplate(200, res, ErrorTemplate(Codes.EMAIL_EXISTS, "Email already exists"), false) //
       }
 
       const suscribe = new SuscribeModel({
         name: req.body.name,
         email: req.body.email,
         whatsapp: req.body.whatsapp,
-        accept_terms: req.body.accept_terms,
+        accept_terms: true,
         email_verified: false,
         whatsapp_verified: false,
         hash_whatsapp: generateHash(10),
@@ -113,7 +114,7 @@ routes.post(
       return ResponseTemplate(200, res, {response: "Suscribe created successfully"}, true)
 
     } catch (error) {
-      return ResponseTemplate(500, res, {}, true)
+      return ResponseTemplate(500, res, {}, false)
     }
   }
 );
