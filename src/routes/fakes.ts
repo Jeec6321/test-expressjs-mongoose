@@ -2,6 +2,15 @@ import { Router } from "express";
 
 const routes = Router();
 
+routes.post("/same", async (req, res) => {
+  try {
+    return res.status(200).json(req.body)
+  } catch (error) {
+    return res.status(200).json({message: "error 500"})
+  }
+
+});
+
 routes.get("/stations", async (req, res) => {
   try {
     return res.status(200).json([
