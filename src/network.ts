@@ -48,7 +48,6 @@ const io = require("socket.io")(server, {
 // });
 
 export const socket = io.on("connection", function(socket: any) {
-    console.log("new user")
   // socket.on("alarm", function(message: any) {
   //   console.log("alarm" + message);
   // });
