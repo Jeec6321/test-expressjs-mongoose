@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { socket } from "../../src/index"
+import { socket } from "../network"
 
 const routes = Router();
 
