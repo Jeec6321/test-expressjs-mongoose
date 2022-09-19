@@ -7,6 +7,7 @@ import stationSensorRoute from "./routes/stationsensor"
 import fakesRoute from "./routes/fakes";
 import suscribeRoute from "./routes/suscribe"
 import cors from 'cors';
+import http from 'http'
 
 require('dotenv').config();
 
@@ -32,8 +33,24 @@ app.use("/suscribe", suscribeRoute)
 
 app.use("/fake", fakesRoute);
 
+const server = http.createServer(app);
+
+export const io = require("socket.io")(server, {
+  cors: {
+    origin: '*',
+  }
+});
+
+export const socket = io.on("connection", function(socket: any) {
+  console.log("a user connected");
+  // whenever we receive a 'message' we log it out
+  socket.on("alarm", function(message: any) {
+    console.log("alarm" + message);
+  });
+});
+
 const PORT = process.env.PORT || 3333
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`);
 });

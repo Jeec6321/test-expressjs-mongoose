@@ -1,6 +1,35 @@
 import { Router } from "express";
+import { socket } from "../../src/index"
 
 const routes = Router();
+
+routes.get("/simulate-alarm", async (req,res) => {
+  const data = {
+    station: {
+      _id: "6321e5fd921bd448d4a69b0c",
+      name: "Estación 2",
+      location: {
+        latitude: 10.4370837,
+        longitude: -75.5090177
+      }
+    },
+    alarm: {
+      _id: "3123123",
+      type: "ROJA",
+      color: "FF0000"
+    },
+    sensor: {
+      _id: "01283123",
+      name: "Temperatura",
+      value: "45",
+      unit: "ºC"
+    }
+  }
+
+  socket.emit("alarm", JSON.stringify(data))
+
+  return res.status(200).json({message: "Alarm sent"})
+})
 
 routes.post("/same", async (req, res) => {
   try {

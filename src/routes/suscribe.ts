@@ -33,7 +33,6 @@ routes.post(
             return ResponseTemplate(404, res, ErrorTemplate(Codes.SUSCRIBE_NOT_FOUND, "id or hash invalid"), false)
 
         } catch (error) {
-            console.log(error)
             return ResponseTemplate(500, res, {}, false)
         }
     }
@@ -67,7 +66,6 @@ routes.post(
             return ResponseTemplate(200, res, ErrorTemplate(Codes.SUSCRIBE_NOT_FOUND, "id or hash invalid"), false)
 
         } catch (error) {
-          console.log(error)
             return ResponseTemplate(500, res, {}, false)
         }
     }
