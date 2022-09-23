@@ -3,6 +3,9 @@ import mongoose from "mongoose"
 
 interface IStation extends Document {
     name: string;
+    location: object;
+    mac: string;
+    imei: string
 }
 
 const StationSchema = new Schema({
@@ -14,7 +17,13 @@ const StationSchema = new Schema({
     },
     sensors: [{
        type: mongoose.Types.ObjectId, ref: "sensor"
-    }]
+    }],
+    mac: {
+        type: String
+    },
+    imei: {
+        type: String
+    }
 });
 
 const StationModel = model<IStation>("station", StationSchema);

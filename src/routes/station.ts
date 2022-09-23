@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { StationModel, IStation } from "../models/station";
+import { MeasureModel } from "../models/measure"
+import { Codes, ErrorTemplate, ResponseTemplate } from "../utils/responseTemplate"
 
 const routes = Router();
 
@@ -19,34 +21,19 @@ routes.get("/:id", async (req, res) => {
     try {
         const id: String = req.params.id
 
-        if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-            return res.status(404).json({"message": "Invalid id"})
-        }   
-
         const station = await StationModel.findOne({_id: id}).exec();
 
         if (!station) {
-            return res.status(404).json({"message": "Station " + id + " not found"});
+          return ResponseTemplate(200, res, ErrorTemplate(Codes.STATION_NOT_FOUND, {message: "Station " + id + "not found" }), false)
         }
 
-        var min = 0;
-        var max = 1;
+        const lastMeasure = await MeasureModel.findOne({imei: station.imei, success_record: true}).sort({created_at: -1}).exec()
 
-        let data = {
-            station,
-            temperature: getFakeValue(Math.random() * (60 * max - 60 * min) + 60 * min, 60),
-            humidity: getFakeValue(Math.random() * (100 * max - 100 * min) + 100 * min, 100),
-            precipitation: getFakeValue(Math.random() * (10000 * max - 10000 * min) + 10000 * min, 10000),
-            lumens: getFakeValue(Math.random() * (300000 * max - 300000 * min) + 300000 * min, 300000),
-            rain: getFakeValue(Math.random() * (1000 * max - 1000 * min) + 1000 * min, 1000),
-            direction: getFakeValue(Math.random() * (360 * max - 360 * min) + 360 * min, 360),
-            uv: getFakeValue(Math.random() * (15 * max - 15 * min) + 15 * min, 15),
-            wind_speed: getFakeValue(Math.random() * (160 * max - 160 * min) + 160 * min, 160),
-            rive_height: getFakeValue(Math.random() * (20 * max - 20 * min) + 20 * min, 20),
-            earth_movement: getFakeValue(Math.random() * (100 * max + 100 * min) - 100 * min, 100),
+        if (!lastMeasure) {
+          return ResponseTemplate(200, res, ErrorTemplate(Codes.LAST_MEASURE_ERROR, {message: "Last measure not found" }), false)
         }
 
-        return res.status(200).json(data);
+        return ResponseTemplate(200, res, lastMeasure, true)
     } catch (error) {
         console.error(error);
         

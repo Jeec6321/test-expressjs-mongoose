@@ -2,7 +2,10 @@ export const Codes = {
     VALIDATOR_ERROR: 0,
     WHATSAPP_EXISTS: 1,
     EMAIL_EXISTS: 2,
-    SUSCRIBE_NOT_FOUND: 3
+    SUSCRIBE_NOT_FOUND: 3,
+    STATION_NOT_FOUND: 4,
+    PARAM_IMEI_ERROR: 5,
+    LAST_MEASURE_ERROR: 6
 }
 
 export const ErrorTemplate = (error_type: number, data: any) => {

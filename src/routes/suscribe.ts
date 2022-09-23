@@ -22,15 +22,15 @@ routes.post(
                 hash_whatsapp: req.body.hash_whatsapp
             })
 
-            if (findSuscribe) {
-                findSuscribe.whatsapp_verified = true
-
-                findSuscribe.save()
-
-                return ResponseTemplate(200, res, {resposne: "Success update"}, true)
+            if (!findSuscribe) {
+              return ResponseTemplate(404, res, ErrorTemplate(Codes.SUSCRIBE_NOT_FOUND, "id or hash invalid"), false)
             }
 
-            return ResponseTemplate(404, res, ErrorTemplate(Codes.SUSCRIBE_NOT_FOUND, "id or hash invalid"), false)
+            findSuscribe.whatsapp_verified = true
+
+            findSuscribe.save()
+
+            return ResponseTemplate(200, res, {resposne: "Success update"}, true)
 
         } catch (error) {
             return ResponseTemplate(500, res, {}, false)
