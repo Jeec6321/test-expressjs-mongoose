@@ -33,6 +33,7 @@ app.use("/suscribe", suscribeRoute)
 
 app.use("/fake", fakesRoute);
 
+
 const server = http.createServer(app);
 
 const io = require("socket.io")(server, {
