@@ -7,17 +7,14 @@ import fetch, {
     FetchError,
 } from "node-fetch";
 
+require("dotenv").config();
+
 const linkWhatsappApi =
   "https://graph.facebook.com/v14.0/105490878890575/messages";
-const accesTokenWhatsapp =
-  "Bearer " +
-  "EAATvzhRoYRUBACi0EeN3HT8kfcd6knNkeQw4Moihe4Syu0oGWXpRJT7jb9EgctsM1F9GLjHkLZAsuwl7NXPWJYF1iApEOtthf7Je011iUy2AW1KVsQbcnakmc8J9ktAb1nQz3psQe2QlYz37VtRlEmiwdaZBCKiAr4ZCLLCz9JfzV2gZABar9pRjHPJEugdLtEBwGX9HZAQZDZD";
 const linkFacebookApi =
   "https://graph.facebook.com/v15.0/100457559453071/feed?message=";
-const accesTokenFacebook =
-  "EAATvzhRoYRUBADvoi4BStfZBBDUc7nYHiczD3MpkDZAMjvQY7Du3Qt2JCaOpaReqd6wMcwZCxegqdJ0QT4k2YS1U3U9yCw6ze6qExjTtAg8aV2ZANuXBDJSu8yK7pCs4CVpEQT4GWfatiRXkZAH4HQW2hNikmVYhC0OC8gP1fqAre8FEi5NcjKFlIEHnBAQIZD";
 
-export const Facebook = (DataPost: any) => {
+export const PostFacebook = (DataPost: any) => {
   const textMensage =
     "ALERTA DE GRADO " +
     DataPost.degree_phenomenon +
@@ -49,18 +46,18 @@ export const Facebook = (DataPost: any) => {
   const messageEncoded = encodeURI(textMensage);
 
   fetch(
-    linkFacebookApi + messageEncoded + "&access_token=" + accesTokenFacebook,
+    linkFacebookApi + messageEncoded + "&access_token=" + process.env.FACEBOOK_TOKEN,
     {
       method: "POST",
     }
   );
 };
 
-export const Whatsapp =  async (DataPost: any) => {
+export const SendWhatsapp =  async (DataPost: any) => {
   const response = await fetch(linkWhatsappApi, {
     method: "POST",
     headers: {
-      Authorization: accesTokenWhatsapp,
+      Authorization: "" + process.env.WHATSAPP_TOKEN,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -125,6 +122,5 @@ export const Whatsapp =  async (DataPost: any) => {
   }
   );
 
-  console.log("HOlaa")
   console.log(response)
 };

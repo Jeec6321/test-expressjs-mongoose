@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { socket } from "../network";
-import { Whatsapp } from "../utils/socialMedia";
+import { SendWhatsapp } from "../utils/socialMedia";
 import { Get } from "../utils/petitions";
 import { Codes, ErrorTemplate, ResponseTemplate } from "../utils/responseTemplate"
 import { StationModel } from "../models/station";
@@ -20,7 +20,7 @@ routes.get("/simulate-alarm", async (req, res) => {
     units_phenomenon: " %",
   };
 
-  Whatsapp(DataPost);
+  SendWhatsapp(DataPost);
 
   const data = {
     station: {

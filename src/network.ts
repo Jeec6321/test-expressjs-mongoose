@@ -21,8 +21,6 @@ app.use(express.raw({ type: "application/vnd.custom-type" }));
 
 app.use(express.text({ type: "text/html" }));
 
-//app.use("/countries", countryRoute);
-
 app.use("/sensor", sensorRoute);
 
 app.use("/station", stationRoute);
@@ -33,7 +31,6 @@ app.use("/suscribe", suscribeRoute)
 
 app.use("/fake", fakesRoute);
 
-
 const server = http.createServer(app);
 
 const io = require("socket.io")(server, {
@@ -41,12 +38,6 @@ const io = require("socket.io")(server, {
     origin: '*',
   }
 });
-
-// const PORT = process.env.PORT || 3333
-
-// server.listen(PORT, () => {
-//   console.log(`Example app listening at http://localhost:${PORT}`);
-// });
 
 export const socket = io.on("connection", function(socket: any) {
   // socket.on("alarm", function(message: any) {
